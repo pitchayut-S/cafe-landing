@@ -6,7 +6,7 @@ function Footer() {
       <p className="text-xs md:text-sm mb-4">กรุงเทพมหานคร · 02-xxx-xxxx</p>
 
       <div className="flex justify-center gap-4 mb-4">
-        <a href="#" aria-label="Facebook" className="hover:text-amber-500 transition">
+        <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-amber-500 transition">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M22 12a10 10 0 1 0-11.56 9.87v-6.98H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.98A10 10 0 0 0 22 12Z"/>
           </svg>
