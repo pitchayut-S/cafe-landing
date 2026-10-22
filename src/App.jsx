@@ -1,9 +1,16 @@
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
+import Admin from './pages/Admin'
 
-// App: ไม่ใช้ routing แล้ว เพราะหน้า login เปลี่ยนเป็น popup (AuthModal) แทนการเปลี่ยนหน้า
-// เหลือแค่ render หน้า Home หน้าเดียว
+// App: เพิ่ม route /admin สำหรับหน้าจัดการรายการจองโต๊ะ
+// ส่วนหน้า login/สมัครยังเป็น popup (AuthModal) เหมือนเดิม ไม่ใช่ route แยก
 function App() {
-  return <Home />
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/admin" element={<Admin />} />
+    </Routes>
+  )
 }
 
 export default App

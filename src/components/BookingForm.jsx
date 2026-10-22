@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 
 function BookingForm() {
   const [formData, setFormData] = useState({
@@ -33,22 +34,37 @@ function BookingForm() {
     setErrorMsg('')
     setStatus('sending')
 
+    // บันทึกลง Supabase (database จริง ให้หน้า /admin ดึงมาแสดง/จัดการได้)
+    const { error: dbError } = await supabase.from('bookings').insert([
+      {
+        name: formData.name,
+        phone: formData.phone,
+        date: formData.date,
+        time: formData.time,
+        guests: Number(formData.guests) || 1,
+      },
+    ])
+
+    if (dbError) {
+      console.error('Supabase insert error:', dbError)
+      setStatus('error')
+      return
+    }
+
+    // ส่งอีเมลแจ้งเตือนผ่าน Formspree ควบคู่ไปด้วย (ถ้าพลาดไม่ถือว่าการจองล้มเหลว
+    // เพราะข้อมูลถูกบันทึกลง database แล้ว แค่แจ้งเตือนอีเมลอาจไม่ถึง)
     try {
-      const response = await fetch('https://formspree.io/f/xvkzenbk', {
+      await fetch('https://formspree.io/f/xvkzenbk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-
-      if (response.ok) {
-        setStatus('success')
-        setFormData({ name: '', phone: '', date: '', time: '', guests: '' })
-      } else {
-        setStatus('error')
-      }
     } catch (err) {
-      setStatus('error')
+      console.warn('Formspree notify failed (booking already saved):', err)
     }
+
+    setStatus('success')
+    setFormData({ name: '', phone: '', date: '', time: '', guests: '' })
   }
 
   return (
